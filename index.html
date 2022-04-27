@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JS Calculator</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+	<style>
+		#display {
+			font-size: 2em;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<h1 class="col-12 text-center mt-5">JS Calculator</h1>
+		</div> <!-- .row -->
+		<div class="row">
+			<div id="calculator" class="mt-4 col-12 col-md-6 ml-md-auto mr-md-auto col-lg-4">
+				<div class="row">
+					<input type="text" id="display" class="col-12 text-right form-control" value="">
+				</div> <!-- .row -->
+				<div class="row">
+					<button class="col-9 btn btn-lg btn-outline-dark" id="ac">AC</button> <!-- 0 -->
+					<button class="col-3 btn btn-lg btn-outline-dark" id="divide">/</button> <!-- 1 -->
+				</div> <!-- .row -->
+				<div class="row">
+					<button class="col-3 btn btn-lg btn-outline-dark">7</button> <!-- 2 -->
+					<button class="col-3 btn btn-lg btn-outline-dark">8</button> <!-- 3 -->
+					<button class="col-3 btn btn-lg btn-outline-dark">9</button> <!-- 4 -->
+					<button class="col-3 btn btn-lg btn-outline-dark" id="multiply">*</button> <!-- 5 -->
+				</div> <!-- .row -->
+				<div class="row">
+					<button class="col-3 btn btn-lg btn-outline-dark">4</button> <!-- 6 -->
+					<button class="col-3 btn btn-lg btn-outline-dark">5</button> <!-- 7 -->
+					<button class="col-3 btn btn-lg btn-outline-dark">6</button> <!-- 8 -->
+					<button class="col-3 btn btn-lg btn-outline-dark" id="subtract">-</button> <!-- 9 -->
+				</div> <!-- .row -->
+				<div class="row">
+					<button class="col-3 btn btn-lg btn-outline-dark">1</button> <!-- 10 -->
+					<button class="col-3 btn btn-lg btn-outline-dark">2</button> <!-- 11 -->
+					<button class="col-3 btn btn-lg btn-outline-dark">3</button> <!-- 12 -->
+					<button class="col-3 btn btn-lg btn-outline-dark" id="add">+</button> <!-- 13 -->
+				</div> <!-- .row -->
+				<div class="row">
+					<button class="col-6 btn btn-lg btn-outline-dark">0</button> <!-- 14 -->
+					<button class="col-3 btn btn-lg btn-outline-dark" id="decimal">.</button> <!-- 15 -->
+					<button class="col-3 btn btn-lg btn-outline-dark" id="equal">=</button> <!-- 16 -->
+					<button class="col-3 btn btn-lg btn-outline-dark" id="exponent">^</button>  <!--17-->
+				</div> <!-- .row -->
+			</div> <!-- #calculator -->
+		</div> <!-- .row -->
+	</div> <!-- .container -->
+
+	<script>
+		//Potential number storage 
+		let num1;
+		let operator;
+		
+		//SELECT ALL THE BUTTONS AS AN ARRAY
+		btn = document.querySelectorAll('button')
+		btnArray = Array.prototype.slice.call(btn, 0)
+		btnArray.splice(0,2)
+		btnArray.splice(3,1)
+		btnArray.splice(6,1)
+		btnArray.splice(9,1)
+		btnArray.splice(10,2)
+		btnArray.pop()
+		//Get the buttons in the to display
+		const display = document.getElementById('display');
+		
+		btnArray.forEach(function(item){
+			item.addEventListener('click', showInput)
+			function showInput(){
+				num1 = parseInt(item.innerHTML)
+				display.value+=item.innerHTML
+				return item.innerHTML
+			}
+		})
+
+		//Get the operators to display
+		let delArr1=document.getElementById('divide');
+		let delArr2= document.getElementById('multiply');
+		let delArr3= document.getElementById('add');
+		let delArr4= document.getElementById('subtract');
+		let delArr5= document.getElementById('decimal');
+		let delArr6= document.getElementById('exponent');
+		
+		let operatorArr= [delArr1, delArr2, delArr3, delArr4, delArr5, delArr6]
+		operatorArr.forEach(function(operand){ 
+         operand.addEventListener('click', showOperand)
+		  function showOperand(){
+			  operator = operand.innerHTML
+			  display.value += operand.innerHTML
+			  return operand.innerHTML
+			  console.log(operand.innerHTML)
+		  }
+		})
+
+		let cancel = document.getElementById('ac');
+		cancel.addEventListener('click', remove)
+		function remove() {
+			display.value =''; 
+		}
+		
+		// let num1;
+		// let operation;
+		// console.log(display.value)
+		let solution =  document.getElementById('equal');
+		solution.addEventListener('click', solveOutput)
+		function solveOutput() {
+			let num2 = document.getElementById('display').value
+			 num2 = parseInt(num2)
+			 let result;
+			 if(operator==='+'){
+				 result = num1 + num2
+			 }
+			 else if(operator==='-'){
+				result = num2 - num1
+			 }
+			 else if(operator==='*'){
+				result = num1 * num2
+			 }
+			 else if(operator==='/'){
+				result = num1 / num2
+			 }
+			 else if(operator==='^'){
+				result = num1 ^ num2
+			 }
+		   display.value = result
+		}
+		
+	
+		// let solution = document.getElementById('equal');
+		// // let num2 = document.getElementById('display').value;
+		// // let num1 = document.getElementById('display').value;
+		// let result;
+		// // num2 = parseInt(num2)
+		// // num1 = parseInt(num1)
+		//
+
+		
+		
+	
+		//shoud return 3
+        	/*
+			1. User enters the first number (could be multi-digit)
+				a. String concatenation
+			2. User presses an operation (addition, subtraction, multiplication, or division)
+			3. User enters the second number (could be multi-digit)
+			4. User presses = button to see the result
+			5. User presses AC button to clear the display (show 0)
+		    */
+
+		    /*
+			1. Make 'display' variable
+			2. Save 'display' into 'num1' 
+			3. Clear 'display' variable
+		    */
+
+	</script>
+</body>
+</html>
